@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Système Solaire</title>
+  <style>
+    .description {
+      display: none; /* Cacher par défaut */
+      position: fixed; /* Position fixe */
+      top: 10%; /* Distance du haut de l'écran */
+      right: 2%; /* Fixée à gauche */
+      background: white;
+      padding: 1em;
+      border-radius: 8px;
+      color: black;
+      width: 70em;
+      z-index: 10; /* S'assurer qu'elle est au-dessus des autres éléments */
+    }
+    .planet {
+      pointer-events: all; /* Assurez-vous que les événements de pointeur sont actifs */
+      z-index: 1; /* Ajustez l'ordre de superposition si nécessaire */
+    }
+  </style>
+</head>
+<body class="bg-black h-screen flex items-center justify-center overflow-hidden">
+  <div class="container relative w-[40em] h-[40em] text-[6px]">
+
+    <!-- Soleil -->
+    <div class="sun relative w-[10em] h-[10em] rounded-full flex items-center justify-center">
+      <img class="w-full h-full object-cover" src="./images/sun.png" alt="Sun">    
+    </div>
+
+    <!-- Planètes -->
+    <div class="planet" data-planet="mercury">
+      <div class="mercury border border-transparent absolute top-[12.5em] left-[12.5em] w-[15em] h-[15em]"></div>
+    </div>
+    <div class="planet" data-planet="venus">
+      <div class="venus border border-transparent absolute top-[10em] left-[10em] w-[20em] h-[20em]"></div>
+    </div>
+    <div class="planet" data-planet="earth">
+      <div class="earth border border-transparent absolute top-[6em] left-[6em] w-[28em] h-[28em]">
+        <div class="moon border border-transparent absolute top-[2em] right-[-1em] w-[7em] h-[7em]" data-planet="moon"></div>
+      </div>
+    </div>
+    <div class="planet" data-planet="mars">
+      <div class="mars border border-transparent absolute top-[2em] left-[2.5em] w-[36em] h-[36em]"></div>
+    </div>
+    <div class="planet" data-planet="jupiter">
+      <div class="jupiter border border-transparent absolute top-[-2em] left-[-2em] w-[45em] h-[45em]"></div>
+    </div>
+    <div class="planet" data-planet="saturn">
+      <div class="saturn border border-transparent absolute top-[-7em] left-[-7em] w-[55em] h-[55em]"></div>
+    </div>
+    <div class="planet" data-planet="uranus">
+      <div class="uranus border border-transparent absolute top-[-12em] left-[-12em] w-[65em] h-[65em]"></div>
+    </div>
+    <div class="planet" data-planet="neptune">
+      <div class="neptune border border-transparent absolute top-[-17em] left-[-17em] w-[75em] h-[75em]"></div>
+    </div>
+    <div class="planet" data-planet="pluto">
+      <div class="pluto border border-transparent absolute top-[-22em] left-[-22em] w-[85em] h-[85em]"></div>
+    </div>
+
+    <!-- Description Box -->
+    <div id="planet-description" class="description">
+      <h2 id="planet-name" class="text-lg font-bold"></h2>
+      <p id="planet-info"></p>
+    </div>
+  </div>
+
+  <script>
+    const planets = {
+      mercury: { name: 'Mercure', info: 'La plus petite planète du système solaire.' },
+      venus: { name: 'Vénus', info: 'Planète très chaude avec une atmosphère dense.' },
+      earth: { name: 'Terre', info: 'Notre planète, la seule connue pour abriter la vie.' },
+      mars: { name: 'Mars', info: 'La planète rouge, étudiée pour la possibilité de vie.' },
+      jupiter: { name: 'Jupiter', info: 'La plus grande planète, une géante gazeuse.' },
+      saturn: { name: 'Saturne', info: 'Connue pour ses magnifiques anneaux.' },
+      uranus: { name: 'Uranus', info: 'Géante gazeuse avec une inclinaison unique.' },
+      neptune: { name: 'Neptune', info: 'La planète la plus éloignée du Soleil.' },
+      pluto: { name: 'Pluton', info: 'Planète naine anciennement la neuvième planète.' }
+    };
+
+    document.querySelectorAll('.planet').forEach(planet => {
+      planet.addEventListener('click', (event) => {
+        const planetKey = planet.getAttribute('data-planet');
+        const planetData = planets[planetKey];
+
+        console.log('Clicked planet:', planetKey); // Pour le débogage
+
+        if (planetData) {
+          document.getElementById('planet-name').innerText = planetData.name;
+          document.getElementById('planet-info').innerText = planetData.info;
+          document.getElementById('planet-description').style.display = 'block'; // Afficher la description
+        }
+      });
+    });
+
+    // Cacher la description lorsque l'utilisateur clique en dehors de la boîte de description
+    window.addEventListener('click', (event) => {
+      const descriptionBox = document.getElementById('planet-description');
+      if (!descriptionBox.contains(event.target) && !event.target.classList.contains('planet')) {
+        descriptionBox.style.display = 'none'; // Cacher la description
+      }
+    });
+  </script>
+</body>
+</html>
